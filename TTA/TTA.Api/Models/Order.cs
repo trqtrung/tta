@@ -22,6 +22,15 @@ namespace TTA.Api.Models
         [Column("stage")]
         public string Stage { get; set; }
 
+        [Column("customer_name")]
+        public string CustomerName { get; set; }
+
+        [Column("customer_phone")]
+        public string CustomerPhone { get; set; }
+
+        [Column("customer_address")]
+        public string CustomerAddress { get; set; }
+
         [Column("customer_id")]
         public Guid? CustomerId { get; set; }
 
@@ -32,6 +41,9 @@ namespace TTA.Api.Models
         [Column("note")]
         public string Note { get; set; }
         
+        [Column("payment_method")]
+        public string PaymentMethod { get; set; }
+
         [Column("shipping_service")]
         public string ShippingService { get; set; }
 
@@ -42,8 +54,14 @@ namespace TTA.Api.Models
         [Column("receive_payment")]
         public DateTime? ReceivePayment { get; set; }
 
+        [Column("order_date")]
+        public DateTime? OrderDate { get; set; }
+
         [Column("total")]
         public decimal? Total { get; set; }
+
+        [Column("cancel_reason")]
+        public string CancelReason { get; set; }
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }

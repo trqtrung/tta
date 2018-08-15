@@ -75,6 +75,9 @@ namespace TTA.Api.Migrations
                     b.Property<string>("Salt")
                         .HasColumnName("salt");
 
+                    b.Property<DateTimeOffset>("Updated")
+                        .HasColumnName("updated");
+
                     b.Property<string>("Username")
                         .HasColumnName("username");
 
@@ -116,6 +119,9 @@ namespace TTA.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
 
+                    b.Property<string>("CancelReason")
+                        .HasColumnName("cancel_reason");
+
                     b.Property<string>("Client")
                         .HasColumnName("client");
 
@@ -126,8 +132,17 @@ namespace TTA.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("created");
 
+                    b.Property<string>("CustomerAddress")
+                        .HasColumnName("customer_address");
+
                     b.Property<Guid?>("CustomerId")
                         .HasColumnName("customer_id");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnName("customer_name");
+
+                    b.Property<string>("CustomerPhone")
+                        .HasColumnName("customer_phone");
 
                     b.Property<DateTime?>("Delivered")
                         .HasColumnName("delivered");
@@ -135,9 +150,15 @@ namespace TTA.Api.Migrations
                     b.Property<string>("Note")
                         .HasColumnName("note");
 
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnName("order_date");
+
                     b.Property<string>("OrderNo")
                         .IsRequired()
                         .HasColumnName("order_no");
+
+                    b.Property<string>("PaymentMethod")
+                        .HasColumnName("payment_method");
 
                     b.Property<DateTime?>("ReceivePayment")
                         .HasColumnName("receive_payment");
@@ -150,6 +171,9 @@ namespace TTA.Api.Migrations
 
                     b.Property<decimal?>("Total")
                         .HasColumnName("total");
+
+                    b.Property<DateTimeOffset>("Updated")
+                        .HasColumnName("updated");
 
                     b.Property<DateTime>("updated_timestamp");
 

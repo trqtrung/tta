@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace TTA.Api.Controllers
             return Ok(await _context.Products.FindAsync(id));
         }
 
+        //[EnableCors("AllowSpecificOrigin")]
+        //[DisableCors]
         public async Task<IActionResult> Get()
         {
             return Ok(await _context.Products.ToListAsync());

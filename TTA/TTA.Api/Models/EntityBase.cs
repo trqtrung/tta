@@ -14,5 +14,8 @@ namespace TTA.Api.Models
         [Column("created")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTimeOffset Created { get; set; }
+
+        [Column("updated")]
+        public DateTimeOffset Updated { get; set; }
     }
 }
