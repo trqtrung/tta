@@ -230,3 +230,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 .vscode/
+TTA/.vs/TTA/DesignTimeBuild/.dtbcache
+TTA/.vs/TTA/DesignTimeBuild/.dtbcache
+TTA/.vs/TTA/v15/Server/sqlite3/storage.ide-shm
+TTA/.vs/TTA/v15/Server/sqlite3/storage.ide-wal
