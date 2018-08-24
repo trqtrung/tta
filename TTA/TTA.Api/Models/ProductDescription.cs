@@ -4,28 +4,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TTA.Api.Models
 {
-    [Table("buying_prices")]
-    public class BuyingPrice
+    [Table("product_descriptions")]
+    public class ProductDescription
     {
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
 
-        [Column("supplier_id")]
-        public int? SupplierId { get; set; }
+        [Required]
+        [Column("name")]
+        public string Name { get; set; }
 
-        //public virtual Supplier Supplier { get; set; }
+        [Column("language")]
+        public string Language { get; set; }
+
+        [Column("description")]
+        public string Description { get; set; }
+
+        [Column("created")]
+        public DateTime? Created { get; set; }
 
         [Column("product_id")]
         public int ProductId { get; set; }
 
         public virtual Product Product { get; set; }
-
-        [Column("price_date")]
-        public DateTime PriceDate { get; set; }
-
-        [Column("price")]
-        public double Price { get; set; }
     }
 }

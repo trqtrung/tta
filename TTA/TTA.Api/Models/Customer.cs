@@ -32,7 +32,5 @@ namespace TTA.Api.Models
 
         [Column("last_login")]
         public DateTime LastLogin {get;set;}
-
-        public ICollection<SellingPrice> SellingPrices { get; set; }
     }
 }

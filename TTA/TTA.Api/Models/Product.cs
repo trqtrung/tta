@@ -17,14 +17,17 @@ namespace TTA.Api.Models
         [Column("name")]
         public string Name { get; set; }
 
+        [Column("product_code")]
+        public string ProductCode { get; set; }
+
         [Column("description")]
         public string Description { get; set; }
 
         [Column("type")]
-        public int? Type { get; set; }        
-       
-        [Column("brand")]
-        public int? Brand { get; set; }
+        public int? Type { get; set; }
+
+        [Column("brand_id")]
+        public int? BrandID { get; set; }
 
         [Column("sku")]
         public string SKU { get; set; }
@@ -44,10 +47,32 @@ namespace TTA.Api.Models
         [Column("weight")]
         public decimal? Weight { get; set; }
 
+        [Column("height")]
+        public decimal? Height { get; set; }
+
+        [Column("width")]
+        public decimal? Width { get; set; }
+
+        [Column("length")]
+        public decimal? Length { get; set; }
+
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 
         public virtual ICollection<BuyingPrice> BuyingPrices { get; set; }
 
         public virtual ICollection<SellingPrice> SellingPrices { get; set; }
+
+        public virtual ICollection<ProductDescription> ProductDescriptions { get; set; }
+
+        public virtual Brand Brands { get; set; }
+
+        [NotMapped]
+        public double Price { get; set; }
+
+        [NotMapped]
+        public double BuyingPrice { get; set; }
+
+        [NotMapped]
+        public int? SupplierID { get; set; }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TTA.Api.Data;
+using TTA.Api.Helpers;
 using TTA.Api.Models;
 
 namespace TTA.Api.Controllers
@@ -14,18 +16,54 @@ namespace TTA.Api.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        private readonly ILogger _logger;
+
         private readonly AppDbContext _context;
 
-        public OrdersController(AppDbContext context)
+        public OrdersController(AppDbContext context, ILogger<OrdersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: api/Orders
         [HttpGet]
-        public IEnumerable<Order> GetOrders()
+        public async Task<IEnumerable<Order>> GetOrdersAsync([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string client, [FromQuery] string stage, [FromQuery] string customer, [FromQuery] string phone, [FromQuery] string orderNo)
         {
-            return _context.Orders;
+            DateTime _from = DateTime.Today.AddDays(-60);
+            DateTime _to = DateTime.Today.AddDays(1).AddSeconds(-1);
+
+            if (from > DateTime.MinValue)
+                _from = from;
+            if (to > DateTime.MinValue && to > _from)
+                _to = to;
+
+            List<Order> orders = new List<Order>();
+
+            var query = from o in _context.Orders where o.OrderDate >= _from && o.OrderDate <= _to select o;
+
+            if (!string.IsNullOrEmpty(orderNo))
+                query = query.Where(x => x.OrderNo.Contains(orderNo));
+
+            if(!string.IsNullOrEmpty(customer))
+                query = query.Where(x => x.CustomerName.Contains(customer));
+
+            if (!string.IsNullOrEmpty(phone))
+                query = query.Where(x => x.CustomerPhone.Contains(phone));
+
+            if (!string.IsNullOrEmpty(client))
+                query  = query.Where(x => x.Client == client);
+
+            if (!string.IsNullOrEmpty(stage))
+                query = query.Where(x => x.Stage == stage);
+
+            string sql = query.ToSql();
+
+            _logger.LogError(sql);
+
+            orders = await query.OrderByDescending(x => x.OrderDate).ToListAsync();
+
+            return orders;
         }
 
         // GET: api/Orders/5

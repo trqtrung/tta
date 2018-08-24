@@ -13,29 +13,82 @@ namespace TTA.Api.Data
             //check if there is any client option
             if (context.Products.Any())
             {
-                return;
+                //return;
             }
-
-            var products = new Product[]
+            else
             {
+                var products = new Product[]
+                {
                 new Product{ Name="Kềm nhọn 7-inch Licota", Description="Licota Long Nose Plier 7-inch", Created = DateTime.Now},
                 new Product{ Name="Kềm cắt 7-inch Licota", Description="Licota Heavy Cutter Plier 7-inch", Created = DateTime.Now},
                 new Product{ Name="Kềm điện 7-inch Licota", Description="Licota Combination Plier 7-inch", Created=DateTime.Now}
+                };
+
+                foreach (Product p in products)
+                {
+                    context.Products.Add(p);
+                }
+                context.SaveChanges();
+            }
+
+            //brand
+            //check if there is any client option
+            if (context.Brands.Any())
+            {
+                //return;
+            }
+            else
+            {
+                var brands = new Brand[]
+                {
+
+                    new Brand { Name = "No brand", Description = "no-brand", Created = DateTime.Now },
+                new Brand { Name = "TOP", Description = "TOP Taiwan", Created = DateTime.Now },
+                new Brand { Name = "Licota", Description = "Licota Taiwan", Created = DateTime.Now },
+                new Brand { Name = "Century", Description = "Century Taiwan", Created = DateTime.Now },
+                new Brand { Name = "Asaki", Description = "Asaki China Japan Techology", Created = DateTime.Now },
+                new Brand { Name = "Berrylion", Description = "Berrylion China", Created = DateTime.Now },
+                new Brand { Name = "Wynn's", Description = "Wynn's China", Created = DateTime.Now },
+                new Brand { Name = "Barker", Description = "Barker China", Created = DateTime.Now },
+                new Brand { Name = "Master", Description = "Master USA", Created = DateTime.Now },
+                new Brand { Name = "Việt Tiệp", Description = "Việt Tiệp Việt Nam", Created = DateTime.Now },
+                new Brand { Name = "Yeti", Description = "Yeti Taiwan", Created = DateTime.Now },
+                new Brand { Name = "LS", Description = "LS Việt Nam", Created = DateTime.Now },
+                new Brand { Name = "Onika", Description = "Onika China", Created = DateTime.Now },
+                new Brand { Name = "NRT", Description = "NRT China", Created = DateTime.Now },
+                new Brand { Name = "Namilux", Description = "Namilux Việt Nam", Created = DateTime.Now },
+                new Brand { Name = "Vinachi", Description = "Việt Nam", Created = DateTime.Now },
+                new Brand { Name = "Alex", Description = "Alex China", Created = DateTime.Now },
+                new Brand { Name = "Black Hand", Description = "Black Hand Taiwan", Created = DateTime.Now },
+                new Brand { Name = "Allpro", Description = "Allpro Taiwan", Created = DateTime.Now },
+                new Brand { Name = "Solex", Description = "Solex Thailand", Created = DateTime.Now },
+                new Brand { Name = "Makita", Description = "Makita China", Created = DateTime.Now },
+                new Brand { Name = "Standard", Description = "China", Created = DateTime.Now },
+                new Brand { Name = "Dudaco", Description = "Dudaco Việt Nam", Created = DateTime.Now },
+                new Brand { Name = "Vuong Niem", Description = "Vuong Niem Viet Nam", Created = DateTime.Now },
+                new Brand { Name = "Junxo", Description = "Junxo India", Created = DateTime.Now },
+                new Brand { Name = "Luxtop", Description = "Luxtop China", Created = DateTime.Now },
+                new Brand { Name = "YCU-II", Description = "YCU-II Hà Nội", Created = DateTime.Now },
             };
 
-            foreach (Product p in products)
-            {
-                context.Products.Add(p);
+                foreach (Brand item in brands)
+                {
+                    context.Brands.Add(item);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
+
+
+
 
             //check if there is any product record
             if (context.OptionLists.Any())
             {
-                return;
+                //return;
             }
-
-            var options = new OptionList[]
+            else
+            {
+                var options = new OptionList[]
             {
                 //e-commerce websites
                 new OptionList{ Name="Lazada", Key="e-commerce-client", Value="lazada"},
@@ -78,13 +131,51 @@ namespace TTA.Api.Data
                 new OptionList{ Name="Lost", Key="order-shipping",Value="lost"},
                 new OptionList{ Name="Delivered", Key="order-shipping",Value="delivered"},
                 new OptionList{ Name="Return", Key="order-shipping",Value="return"},
+
+                //order types
+                new OptionList{ Name="Khóa cửa cố định", Key="product-type",Value="lock"},
+                new OptionList{ Name="Dụng cụ đo lường", Key="product-type",Value="measurement"},
+                new OptionList{ Name="Đồ dùng văn phòng", Key="product-type",Value="office"},
+                new OptionList{ Name="Thiết bị phòng ăn", Key="product-type",Value="kitchen"},
+                new OptionList{ Name="Thiết bị phòng tắm", Key="product-type",Value="bathroom"},
+                new OptionList{ Name="Sản phẩm khác", Key="product-type",Value="others"},
+                new OptionList{ Name="Bộ đồ nghề sửa chữa", Key="product-type",Value="diy"},
+                new OptionList{ Name="Bảo hộ lao động", Key="product-type",Value="protection"},
+                new OptionList{ Name="Báo động & chống trộm", Key="product-type",Value="security"},
+                new OptionList{ Name="Phụ kiện Ô tô - Xe máy - Xe đạp", Key="product-type",Value="vehicle"},
+                new OptionList{ Name="Dụng cụ sân vườn", Key="product-type",Value="garden"},
+                new OptionList{ Name="Thiết bị điện & phụ kiện", Key="product-type",Value="electronic"},
+
+                new OptionList{ Name="Khóa lục giác", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Kềm", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Dụng cụ tháo lắp", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Kéo & Nhíp", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Bộ dao", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Đinh vít & Ốc vít", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Vặn đai ốc", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Phụ kiện dụng cụ cầm tay", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Cưa", Key="product-type-sub",Value=string.Empty},                
+                new OptionList{ Name="Súng bắn keo", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Súng thổi hơi nóng", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Bấm đinh & ghim", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Phụ kiện Ô tô", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Phụ kiện xe máy", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Phụ kiện xe đạp", Key="product-type-sub",Value=string.Empty},                
+                new OptionList{ Name="Máy khoan", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Bắt diệt côn trùng", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Keo", Key="product-type-sub",Value=string.Empty},
+                new OptionList{ Name="Búa", Key="product-type-sub",Value=string.Empty},
+
             };
 
-            foreach(OptionList o in options)
-            {
-                context.OptionLists.Add(o);
+                foreach (OptionList o in options)
+                {
+                    context.OptionLists.Add(o);
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
+
+            
         }
     }
 }

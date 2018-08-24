@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using System;
 using System.Linq;
 using System.Threading;
@@ -15,7 +17,16 @@ namespace TTA.Api.Data
         {
         }
 
+        public static readonly LoggerFactory MyLoggerFactory
+    = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    => optionsBuilder
+        .UseLoggerFactory(MyLoggerFactory); // Warning: Do not create a new ILoggerFactory instance each time
+
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         public DbSet<OrderTracking> OrderTrackings { get; set; }
 
@@ -25,6 +36,16 @@ namespace TTA.Api.Data
 
         public DbSet<Supplier> Suppliers { get; set; }
 
+        public DbSet<Brand> Brands { get; set; }
+
+        public DbSet<ProductDescription> ProductDescriptions { get; set; }
+
+        public DbSet<BuyingPrice> BuyingPrices { get; set; }
+
+        public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<SellingPrice> SellingPrices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Order>().HasKey(m => m.Id);
@@ -32,6 +53,12 @@ namespace TTA.Api.Data
             builder.Entity<Product>().HasKey(m => m.Id);
             builder.Entity<OptionList>().HasKey(m => m.Id);
             builder.Entity<Supplier>().HasKey(m => m.Id);
+            builder.Entity<Brand>().HasKey(m => m.Id);
+            builder.Entity<ProductDescription>().HasKey(m => m.Id);
+            builder.Entity<BuyingPrice>().HasKey(m => m.Id);
+            builder.Entity<Customer>().HasKey(m => m.Id);
+            builder.Entity<OrderItem>().HasKey(m => m.Id);
+            builder.Entity<SellingPrice>().HasKey(m => m.Id);
 
 
             // shadow properties - log date time record been updated
@@ -49,6 +76,11 @@ namespace TTA.Api.Data
             //relationship
             builder.Entity<OrderItem>().HasOne(i => i.Order).WithMany(o => o.OrderItems);//1 order has many order items
 
+            builder.Entity<ProductDescription>().HasOne(i => i.Product).WithMany(p => p.ProductDescriptions);
+
+            builder.Entity<SellingPrice>().HasOne(i => i.Product).WithMany(p => p.SellingPrices);
+
+            builder.Entity<BuyingPrice>().HasOne(i => i.Product).WithMany(p => p.BuyingPrices);
 
             base.OnModelCreating(builder);
         }
