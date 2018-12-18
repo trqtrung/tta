@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,8 +29,10 @@ namespace TTA.Api.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<IEnumerable<Order>> GetOrdersAsync([FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string client, [FromQuery] string stage, [FromQuery] string customer, [FromQuery] string phone, [FromQuery] string orderNo)
+        public async Task<IEnumerable<Order>> GetOrdersAsync([FromQuery] UrlQuery urlQuery, [FromQuery] DateTime from, [FromQuery] DateTime to, [FromQuery] string client, [FromQuery] string stage, [FromQuery] string customer, [FromQuery] string phone, [FromQuery] string orderNo)
         {
+            int? totalRecords = null;
+
             DateTime _from = DateTime.Today.AddDays(-60);
             DateTime _to = DateTime.Today.AddDays(1).AddSeconds(-1);
 
@@ -57,6 +60,28 @@ namespace TTA.Api.Controllers
             if (!string.IsNullOrEmpty(stage))
                 query = query.Where(x => x.Stage == stage);
 
+            query = query.OrderByDescending(x => x.OrderDate);
+
+            if (urlQuery.PageNumber.HasValue && urlQuery.IncludeCount)
+                totalRecords = query.Count();
+
+            if (urlQuery.PageNumber.HasValue)
+            {
+                query = query.Skip((urlQuery.PageNumber.Value -1) * urlQuery.PageSize).Take(urlQuery.PageSize);
+
+                Pagination p = new Pagination()
+                {
+                    PageNumber = urlQuery.PageNumber.Value,
+                    PageSize = urlQuery.PageSize
+                };
+                if(urlQuery.IncludeCount)
+                {
+                    p.TotalRecords = totalRecords.Value;
+                }
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(p));
+            }
+
+           
             string sql = query.ToSql();
 
             _logger.LogError(sql);

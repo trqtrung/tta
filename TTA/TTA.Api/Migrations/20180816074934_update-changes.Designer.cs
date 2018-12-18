@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TTA.Api.Data;
@@ -9,9 +10,10 @@ using TTA.Api.Data;
 namespace TTA.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180816074934_update-changes")]
+    partial class updatechanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace TTA.Api.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
-
-                    b.Property<double>("Price")
-                        .HasColumnName("price");
 
                     b.Property<DateTime>("PriceDate")
                         .HasColumnName("price_date");
@@ -365,8 +364,8 @@ namespace TTA.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnName("id");
 
-                    b.Property<double>("Price")
-                        .HasColumnName("price");
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnName("customer_id");
 
                     b.Property<DateTime>("PriceDate")
                         .HasColumnName("price_date");
@@ -381,6 +380,8 @@ namespace TTA.Api.Migrations
                         .HasColumnName("quantity_to");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("ProductId");
 
@@ -423,6 +424,10 @@ namespace TTA.Api.Migrations
                         .WithMany("BuyingPrices")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TTA.Api.Models.Supplier", "Supplier")
+                        .WithMany("ProductPrices")
+                        .HasForeignKey("SupplierId");
                 });
 
             modelBuilder.Entity("TTA.Api.Models.OrderItem", b =>
@@ -440,7 +445,7 @@ namespace TTA.Api.Migrations
 
             modelBuilder.Entity("TTA.Api.Models.Product", b =>
                 {
-                    b.HasOne("TTA.Api.Models.Brand", "Brands")
+                    b.HasOne("TTA.Api.Models.Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandID");
                 });
@@ -455,6 +460,10 @@ namespace TTA.Api.Migrations
 
             modelBuilder.Entity("TTA.Api.Models.SellingPrice", b =>
                 {
+                    b.HasOne("TTA.Api.Models.Customer", "Customer")
+                        .WithMany("SellingPrices")
+                        .HasForeignKey("CustomerId");
+
                     b.HasOne("TTA.Api.Models.Product", "Product")
                         .WithMany("SellingPrices")
                         .HasForeignKey("ProductId")

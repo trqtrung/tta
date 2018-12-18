@@ -46,6 +46,8 @@ namespace TTA.Api.Data
 
         public DbSet<SellingPrice> SellingPrices { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Order>().HasKey(m => m.Id);
@@ -59,7 +61,7 @@ namespace TTA.Api.Data
             builder.Entity<Customer>().HasKey(m => m.Id);
             builder.Entity<OrderItem>().HasKey(m => m.Id);
             builder.Entity<SellingPrice>().HasKey(m => m.Id);
-
+            builder.Entity<User>().HasKey(m => m.Id);
 
             // shadow properties - log date time record been updated
             builder.Entity<Order>().Property<DateTime>("updated_timestamp");
@@ -68,10 +70,12 @@ namespace TTA.Api.Data
             builder.Entity<Product>().Property<DateTime>("updated_timestamp");
             builder.Entity<OptionList>().Property<DateTime>("updated_timestamp");
             builder.Entity<Supplier>().Property<DateTime>("updated_timestamp");
+            builder.Entity<User>().Property<DateTime>("updated_timestamp");
 
             builder.Entity<Product>().Property(b => b.Created).ValueGeneratedOnAdd();
             builder.Entity<Order>().Property(b => b.Created).ValueGeneratedOnAdd();          
             builder.Entity<Supplier>().Property(b => b.Created).ValueGeneratedOnAdd();
+            builder.Entity<User>().Property(b => b.Created).ValueGeneratedOnAdd();
 
             //relationship
             builder.Entity<OrderItem>().HasOne(i => i.Order).WithMany(o => o.OrderItems);//1 order has many order items
@@ -96,6 +100,7 @@ namespace TTA.Api.Data
             updateUpdatedProperty<Product>();
             updateUpdatedProperty<OptionList>();
             updateUpdatedProperty<Supplier>();
+            updateUpdatedProperty<User>();
 
             return base.SaveChanges();
         }
@@ -111,6 +116,7 @@ namespace TTA.Api.Data
             updateUpdatedProperty<Product>();
             updateUpdatedProperty<OptionList>();
             updateUpdatedProperty<Supplier>();
+            updateUpdatedProperty<User>();
 
             return (await base.SaveChangesAsync(true, cancellationToken));
         }

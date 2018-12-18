@@ -43,7 +43,7 @@ namespace TTA.Api.Controllers
 
         //[EnableCors("AllowSpecificOrigin")]
         //[DisableCors]
-        public async Task<IActionResult> Get()
+        public async Task<IEnumerable<ProductsViewModel>> Get([FromQuery] string keyword)
         {
             var products = (from p in _context.Products
                             join b in _context.Brands on p.BrandID equals b.Id into p_b
@@ -63,25 +63,28 @@ namespace TTA.Api.Controllers
                                 BuyingPrice = (t3.Price > 0  ? t3.Price : 0),
                                 Description = p.Description,
                                 Type = t4.Name}
-                            //into x group x by x.ID into g select g
-                                                   );
-                            //);
+                            );
 
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                keyword = keyword.ToLower();
+                products = products.Where(x => x.Brand.ToLower().Contains(keyword) || x.Description.ToLower().Contains(keyword) || x.Name.ToLower().Contains(keyword) || x.Type.ToLower().Contains(keyword) || x.SKU.ToLower().Contains(keyword));
+            }
             string sql = products.ToSql();
 
             //Console.WriteLine(sql);
             _logger.LogError(sql);
             List<ProductsViewModel> list = new List<ProductsViewModel>();
 
-            try
-            {               
-                list = await products.ToListAsync();
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex.Message);
-            }
-            return Ok(list);
+            //try
+            //{               
+            //    list = await products.ToListAsync();
+            //}
+            //catch(Exception ex)
+            //{
+            //    _logger.LogError(ex.Message);
+            //}
+            return products;
         }
 
         [HttpPost]

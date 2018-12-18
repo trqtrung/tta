@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TTA.Api.Data;
@@ -9,9 +10,10 @@ using TTA.Api.Data;
 namespace TTA.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180816094923_add-selling-buying-price")]
+    partial class addsellingbuyingprice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,6 +425,10 @@ namespace TTA.Api.Migrations
                         .WithMany("BuyingPrices")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TTA.Api.Models.Supplier", "Supplier")
+                        .WithMany("ProductPrices")
+                        .HasForeignKey("SupplierId");
                 });
 
             modelBuilder.Entity("TTA.Api.Models.OrderItem", b =>
@@ -440,7 +446,7 @@ namespace TTA.Api.Migrations
 
             modelBuilder.Entity("TTA.Api.Models.Product", b =>
                 {
-                    b.HasOne("TTA.Api.Models.Brand", "Brands")
+                    b.HasOne("TTA.Api.Models.Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandID");
                 });

@@ -21,7 +21,7 @@ namespace TTA.Api.Controllers
 
         // GET: api/OptionLists/key
         [HttpGet]
-        public async Task<IActionResult> GetOptionLists([FromQuery] string sortOrder, [FromQuery] string filter, [FromQuery] int pageSize, [FromQuery] int pageNumber)
+        public async Task<IActionResult> GetOptionLists([FromQuery] string filter, [FromQuery] int pageSize, [FromQuery] int pageNumber)
         {
             if (!ModelState.IsValid)
             {
@@ -33,24 +33,14 @@ namespace TTA.Api.Controllers
             if (!string.IsNullOrEmpty(filter))
                 query = query.Where(x => x.Key.Contains(filter) || x.Name.Contains(filter));
 
-            if (sortOrder == "asc")
-                query = query.OrderBy(x => x.Name);
-            else
-                query = query.OrderByDescending(x => x.Name);
-
-
-            var optionLists = await query.Skip(pageSize * pageNumber).Take(pageSize).ToListAsync();
-
-
+            var optionLists = await query.Skip(pageSize * pageNumber).Take(pageSize).OrderBy(x => x.Name).ToListAsync();
 
             if (optionLists == null)
             {
                 return NotFound();
             }
 
-            
-
-         return Ok(optionLists);
+            return Ok(optionLists);
         }
 
         // GET: api/OptionLists/5
